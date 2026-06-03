@@ -4,6 +4,7 @@ import { useInventory } from "@/hooks/features/use-inventory";
 import { Button } from "@/components/ui/Button";
 import { Filter, MoreHorizontal } from "lucide-react";
 import { logger } from "@/lib/logger";
+import GearRow from "@/components/gear-row";
 
 export default function InventoryPage() {
   // const { items, categories, isLoading, error, deleteItem } = useInventory();
@@ -55,30 +56,63 @@ export default function InventoryPage() {
           </div>
 
           {/* CATEGORY ITEM LIST */}
-          <ul className="bg-white divide-y divide-gray-100">
-            {/* ITEM */}
-            <li className="px-4 py-3 flex justify-between items-center w-full">
-              {/* ITEM DESCRIPTION */}
-              <div className="flex flex-col gap-0.5">
-                <p className="font-medium text-sm">Atmos AG 65</p>
-                <p className="text-gray-400 text-xs">
-                  Osprey - Fits torso 18-20"
-                </p>
-              </div>
-              {/* ITEM RIGHT SIDE */}
-              <div className="flex items-center gap-3">
-                <span className="text-gray-500 text-sm">4.6 lb</span>
-                <button className="text-gray-400 p-1"><MoreHorizontal size={18}/></button>
-              </div>
-            </li>
-          </ul>
+          <div className="bg-white divide-y divide-gray-100">
+            {/* ITEMS */}
+            <GearRow
+              name="Atmos AG 65"
+              description='Osprey - Fits torso 18-20"'
+              weight={4.6}
+            />
+
+            <GearRow name="Exos 58" description="Osprey" weight={2.9} />
+          </div>
         </div>
 
+        {/* CATEGORY CARD */}
+        <div>
+          {/* CATEGORY HEADER */}
+          <div className="bg-emerald-600 px-4 py-3 flex justify-between items-center w-full">
+            <h3 className="text-white font-bold uppercase text-sm tracking-wider">
+              Shelter
+            </h3>
+            <div className="text-gray-50 text-sm">2 items</div>
+          </div>
+
+          {/* CATEGORY ITEM LIST */}
+          <div className="bg-white divide-y divide-gray-100">
+            {/* ITEMS */}
+            <GearRow name="Zpacks Duplex" description="Zpacks" />
+          </div>
+        </div>
+
+        {/* CATEGORY CARD */}
+        <div>
+          {/* CATEGORY HEADER */}
+          <div className="bg-emerald-600 px-4 py-3 flex justify-between items-center w-full">
+            <h3 className="text-white font-bold uppercase text-sm tracking-wider">
+              Rain Gear
+            </h3>
+            <div className="text-gray-50 text-sm">2 items</div>
+          </div>
+
+          {/* CATEGORY ITEM LIST */}
+          <div className="bg-white divide-y divide-gray-100">
+            {/* ITEMS */}
+            <div className="px-4 py-3 flex justify-between items-center w-full">
+              {/* ITEM DESCRIPTION */}
+              <div className="flex flex-col gap-0.5">
+                <p className="text-gray-400 text-xs">No items yet</p>
+              </div>
+            </div>
+          </div>
+        </div>
       </section>
 
       {/* FOOTER SECTION (ADD BUTTON) */}
       <section className="fixed bottom-0 left-0 right-0 ">
-        <Button size="lg" className="w-full">Add</Button>
+        <Button size="lg" className="w-full">
+          Add
+        </Button>
       </section>
     </div>
   );
