@@ -4,8 +4,11 @@ import { Menu } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/Sheet";
 import { Button } from "@/components/ui/Button";
 import { SignInButton, SignUpButton, Show, UserButton } from "@clerk/nextjs";
+import { useState } from "react";
 
 export default function NavBar() {
+  const [open, setOpen] = useState<boolean>(false);
+
   return (
     <nav className="sticky top-0 z-50 bg-emerald-950">
       {/* FIRST ROW */}
@@ -34,9 +37,9 @@ export default function NavBar() {
         </div>
 
         {/* MOBILE Menu */}
-        <Sheet>
+        <Sheet open={open} onOpenChange={setOpen}>
           <SheetTrigger asChild className="md:hidden">
-            <button>
+            <button onClick={() => setOpen(true)}>
               <Menu size={24} className="text-white" />
             </button>
           </SheetTrigger>
@@ -59,12 +62,14 @@ export default function NavBar() {
               <Link
                 href="/trips"
                 className="text-lg text-white hover:text-emerald-200"
+                onClick={() => setOpen(false)}
               >
                 Trips
               </Link>
               <Link
                 href="/inventory"
                 className="text-lg text-white hover:text-emerald-200"
+                onClick={() => setOpen(false)}
               >
                 Inventory
               </Link>
