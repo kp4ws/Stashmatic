@@ -23,7 +23,6 @@ export default function HomePage() {
               Start building
             </Button>
           </Link> */}
-          
         </div>
       </header>
 
@@ -37,6 +36,10 @@ export default function HomePage() {
       {/* CALL TO ACTION SECTION */}
 
       {/* TESTIMONIALS SECTION */}
+      
+      <footer className="py-10 md:py-20 bg-emerald-950 text-white text-center">
+        <p>&copy; 2026 Stashmatic. All rights reserved.</p>
+      </footer>
     </div>
   );
 }

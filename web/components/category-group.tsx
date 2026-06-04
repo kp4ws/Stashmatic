@@ -1,41 +1,36 @@
-// import { GearItem } from "@/types/types";
-// import GearRow from "@/components/gear-row";
+import GearRow from "@/components/gear-row";
+import { GearItem } from "@/types";
 
-// type Props = {
-//   title: string;
-//   items: GearItem[];
-//   onEdit: (item: GearItem) => void;
-//   onDelete: (id: string) => void;
-// };
+type Props = {
+  name: string;
+  items: GearItem[];
+};
 
-// export default function CategoryGroup({
-//   title,
-//   items,
-//   onEdit,
-//   onDelete,
-// }: Props) {
-//   return (
-//     <div>
-//       {/* CATEGORY HEADER */}
-//       <div className="bg-green-700 flex justify-between items-center gap-8 p-3 m-3">
-//         <h2 className=" text-white font-semibold">{title}</h2>
-//         <p className="text-sm text-gray-300">{items.length} Items</p>
-//       </div>
+export default function CategoryGroup({ name, items }: Props) {
+  return (
+    <div>
+      {/* CATEGORY HEADER */}
+      <div className="bg-emerald-600 px-4 py-3 flex justify-between items-center w-full">
+        <h3 className="text-white font-bold uppercase text-sm tracking-wider">
+          {name}
+        </h3>
+        <div className="text-gray-50 text-sm">{items.length} items</div>
+      </div>
 
-//       {/* CATEGORY ITEMS */}
-//       <div>
-//         {/* If no items, then display no items. Else display all items for the category group */}
-//         {items.length === 0 && <p className="text-gray-200 italic">No Items Yet</p>}
-
-//         {items.map((item) => (
-//           <GearRow
-//             key={item.id}
-//             item={item}
-//             onEdit={onEdit}
-//             onDelete={onDelete}
-//           />
-//         ))}
-//       </div>
-//     </div>
-//   );
-// }
+      {/* GEAR ITEM LIST */}
+      <div className="bg-white divide-y divide-gray-100">
+        {/* GEAR ITEMS */}
+        {items.length === 0 ? (
+          <p className="px-4 py-3 text-gray-400 text-sm italic">No items yet</p>
+        ) : (
+          items.map((item) => (
+            <GearRow
+              key={item.id}
+              item={item}
+            />
+          ))
+        )}
+      </div>
+    </div>
+  );
+}

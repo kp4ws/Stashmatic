@@ -36,9 +36,7 @@ export default function RootLayout({
 
             <main className="bg-emerald-900">{children}</main>
 
-            <footer className="py-10 md:py-20 bg-emerald-950 text-white text-center">
-              <p>&copy; 2026 Stashmatic. All rights reserved.</p>
-            </footer>
+            
           </Providers>
         </body>
       </html>
