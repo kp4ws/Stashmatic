@@ -2,7 +2,7 @@
 
 import { useInventory } from "@/hooks/features/use-inventory";
 import { Button } from "@/components/ui/Button";
-import { Filter } from "lucide-react";
+import { Filter, Plus } from "lucide-react";
 import CategoryGroup from "@/components/category-group";
 
 export default function InventoryPage() {
@@ -41,6 +41,10 @@ const mockItems = [
   //     </div>
   //   );
   // }
+
+  const handleAdd = () => {
+
+  }
 
   return (
     <div className="min-h-screen px-6 py-4 pb-24">
@@ -83,8 +87,9 @@ const mockItems = [
 
       {/* FOOTER SECTION (ADD BUTTON) */}
       <section className="fixed bottom-0 left-0 right-0 p-4 bg-emerald-900 border-t border-emerald-800">
-        <Button size="lg" className="w-full bg-emerald-600 hover:bg-emerald-700">
-          Add
+        <Button size="lg" className="w-full bg-emerald-600 hover:bg-emerald-700" onClick={handleAdd}>
+          <Plus size={18} />
+          Add Item
         </Button>
       </section>
     </div>
