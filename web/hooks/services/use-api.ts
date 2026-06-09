@@ -29,7 +29,7 @@ export const useApi = () => {
       throw new Error(errorMessage);
     }
 
-    const data = await response.json();
+    const data = response.status === 204 ? null : await response.json();
     return data as T;
   };
 };

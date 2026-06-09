@@ -1,33 +1,12 @@
 "use client";
 
 import { useInventory } from "@/hooks/features/use-inventory";
+import { Filter, Plus, Pencil } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import { Filter, Plus } from "lucide-react";
 import CategoryGroup from "@/components/category-group";
-import { Field, FieldGroup } from "@/components/ui/field";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { useState } from "react";
-import { Category, GearItem } from "@/types";
+import { Category, DialogMode, GearItem } from "@/types";
+import GearItemDialog from "@/components/gear-item-dialog";
 
 export default function InventoryPage() {
   const {
@@ -37,12 +16,57 @@ export default function InventoryPage() {
     error,
     createItem,
     deleteItem,
-    isCreating,
+    updateItem,
+    isSubmitting,
+    isDeleting,
   } = useInventory();
 
   const [open, setOpen] = useState<boolean>(false);
-  const [name, setName] = useState<string>("");
-  const [selectedCategory, setSelectedCategory] = useState<string>("");
+  const [mode, setMode] = useState<DialogMode>("add");
+  const [editingItem, setEditingItem] = useState<GearItem | null>(null);
+
+  //Handles submit for both add and edit
+  const handleSubmit = async (name: string, categoryId: string) => {
+    if (mode === "edit" && editingItem) {
+      await updateItem({
+        id: editingItem.id,
+        data: {
+          name,
+          category_id: categoryId,
+        },
+      });
+    } else {
+      await createItem({
+        name,
+        category_id: categoryId,
+        brand: "",
+        weight_grams: 0,
+        description: "",
+        is_consumable: false,
+        is_worn: false,
+      });
+    }
+
+    //reset form and close modal
+    setOpen(false);
+    setEditingItem(null);
+  };
+
+  const handleOpenAdd = () => {
+    setMode("add");
+    setEditingItem(null);
+    setOpen(true);
+  };
+
+  const handleOpenEdit = (item: GearItem) => {
+    setMode("edit");
+    setEditingItem(item);
+    setOpen(true);
+  };
+
+  const handleDelete = async (item: GearItem) => {
+    await deleteItem(item.id);
+  };
 
   if (isLoading) {
     // TODO: Refactor loading widget
@@ -57,31 +81,6 @@ export default function InventoryPage() {
       </div>
     );
   }
-
-  const handleAdd = async () => {
-    if (!name.trim() || !selectedCategory) return;
-
-    await createItem({
-      name,
-      category_id: selectedCategory,
-      brand: "",
-      weight_grams: 0,
-      description: "",
-      is_consumable: false,
-      is_worn: false,
-    });
-
-    //reset form and close modal
-    setOpen(false);
-    setName("");
-    setSelectedCategory("");
-  };
-
-  const handleEdit = () => {};
-
-  const handleDelete = async () => {
-    
-  };
 
   return (
     <div className="min-h-screen px-6 py-4 pb-24">
@@ -117,6 +116,8 @@ export default function InventoryPage() {
               key={category.id}
               name={category.title}
               items={categoryItems}
+              onEdit={handleOpenEdit}
+              onDelete={handleDelete}
             />
           );
         })}
@@ -124,72 +125,24 @@ export default function InventoryPage() {
 
       {/* FOOTER SECTION (ADD BUTTON) */}
       <section className="fixed bottom-0 left-0 right-0 p-4 bg-emerald-900 border-t border-emerald-800">
-        <Dialog open={open} onOpenChange={setOpen}>
-          <form>
-            <DialogTrigger asChild>
-              <Button
-                size="lg"
-                className="w-full bg-emerald-600 hover:bg-emerald-700"
-                onClick={handleAdd}
-              >
-                <Plus size={18} />
-                Add Item
-              </Button>
-            </DialogTrigger>
-            <DialogContent
-            // onPointerDownOutside={(e) => e.preventDefault()}
-            // onInteractOutside={(e) => e.preventDefault()}
-            >
-              <DialogHeader>
-                <DialogTitle>Add Gear Item</DialogTitle>
-                <DialogDescription>
-                  Add a new gear item into your inventory
-                </DialogDescription>
-              </DialogHeader>
-              <FieldGroup>
-                <Field>
-                  <Label htmlFor="name">Name</Label>
-                  <Input
-                    id="name"
-                    name="name"
-                    defaultValue=""
-                    placeholder=""
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                  />
-                </Field>
-                <Field>
-                  <Label htmlFor="category">Category</Label>
-                  <Select
-                    value={selectedCategory}
-                    onValueChange={setSelectedCategory}
-                  >
-                    <SelectTrigger id="category">
-                      <SelectValue placeholder="Select a category" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectGroup>
-                        {categories.map((category) => (
-                          <SelectItem key={category.id} value={category.id}>
-                            {category.title}
-                          </SelectItem>
-                        ))}
-                      </SelectGroup>
-                    </SelectContent>
-                  </Select>
-                </Field>
-              </FieldGroup>
-              <DialogFooter>
-                <DialogClose asChild>
-                  <Button variant="outline">Cancel</Button>
-                </DialogClose>
-                <Button type="submit" onClick={handleAdd} disabled={isCreating || !name.trim() || !selectedCategory}>
-                  {isCreating ? "Saving..." : "Save changes"}
-                </Button>
-              </DialogFooter>
-            </DialogContent>
-          </form>
-        </Dialog>
+        <Button
+          size="lg"
+          className="w-full bg-emerald-600 hover:bg-emerald-700"
+          onClick={handleOpenAdd}
+        >
+          <Plus size={18} />
+          Add Item
+        </Button>
+        <GearItemDialog
+          key={editingItem?.id ?? "add"}
+          open={open}
+          onOpenChange={setOpen}
+          mode={mode}
+          editingItem={editingItem}
+          categories={categories}
+          onSubmit={handleSubmit}
+          isSubmitting={isSubmitting}
+        />
       </section>
     </div>
   );

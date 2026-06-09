@@ -4,9 +4,11 @@ import { GearItem } from "@/types";
 type Props = {
   name: string;
   items: GearItem[];
+  onEdit: (item: GearItem) => void;
+  onDelete: (item: GearItem) => void;
 };
 
-export default function CategoryGroup({ name, items }: Props) {
+export default function CategoryGroup({ name, items, onEdit, onDelete }: Props) {
   return (
     <div>
       {/* CATEGORY HEADER */}
@@ -27,6 +29,8 @@ export default function CategoryGroup({ name, items }: Props) {
             <GearRow
               key={item.id}
               item={item}
+              onEdit={onEdit}
+              onDelete={onDelete}
             />
           ))
         )}

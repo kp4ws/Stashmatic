@@ -23,3 +23,6 @@ export type TripUpdate = components["schemas"]["TripUpdate"]
 export type TripItem = components["schemas"]["TripItemResponse"]
 export type TripItemCreate = components["schemas"]["TripItemCreate"]
 export type TripItemUpdate = components["schemas"]["TripItemUpdate"]
+
+//UI
+export type DialogMode = "add" | "edit";

@@ -55,6 +55,7 @@ export const useInventory = () => {
     createItem: createItem.mutateAsync,
     updateItem: updateItem.mutateAsync,
     deleteItem: deleteItem.mutateAsync,
-    isCreating: createItem.isPending,
+    isSubmitting: createItem.isPending || updateItem.isPending,
+    isDeleting: deleteItem.isPending
   };
 };
