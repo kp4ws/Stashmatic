@@ -1,9 +1,84 @@
 "use client";
 
+import TripDialog from "@/components/trip-dialog";
+import TripRow from "@/components/trip-row";
 import { Button } from "@/components/ui/button";
-import { Plus, MoreHorizontal } from "lucide-react";
+import { useTrips } from "@/hooks/features/use-trips";
+import { DialogMode, Trip } from "@/types";
+import { Plus } from "lucide-react";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function TripsPage() {
+  const router = useRouter();
+
+  const {
+    trips,
+    isLoading,
+    error,
+    createTrip,
+    deleteTrip,
+    updateTrip,
+    isCreating,
+  } = useTrips();
+
+  const [open, setOpen] = useState<boolean>(false);
+  const [mode, setMode] = useState<DialogMode>("add");
+  const [editingTrip, setEditingTrip] = useState<Trip | null>(null);
+
+  const handleSubmit = async (name: string) => {
+    if (mode === "edit" && editingTrip) {
+      await updateTrip({
+        id: editingTrip.id,
+        data: {
+          name,
+        },
+      });
+    } else {
+      await createTrip({
+        name,
+      });
+    }
+
+    setOpen(false);
+    setEditingTrip(null);
+  };
+
+  const handleOpenAdd = () => {
+    setMode("add");
+    setEditingTrip(null);
+    setOpen(true);
+  };
+
+  const handleOpenEdit = (trip: Trip) => {
+    setMode("edit");
+    setEditingTrip(trip);
+    setOpen(true);
+  };
+
+  const handleDelete = async (trip: Trip) => {
+    await deleteTrip(trip.id);
+  };
+
+  //Callback to enter trip builder when one of the rows is clicked on
+  const handleTripOpen = (trip: Trip) => {
+    router.push(`/trips/${trip.id}`);
+  }
+
+  if (isLoading) {
+    // TODO: Refactor loading widget
+    return <p>Loading ...</p>;
+  }
+
+  if (error) {
+    // TODO: Refactor error widget
+    return (
+      <div className="">
+        <h2 className="text-white">Failed to load trips</h2>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen px-6 py-4 pb-24">
       <header className="flex justify-between items-center mb-6">
@@ -12,44 +87,19 @@ export default function TripsPage() {
 
       {/* TRIPS */}
       <section className="bg-white divide-y divide-gray-100">
-        {/* TRIP */}
-        <div className="px-4 py-3 flex justify-between items-center w-full">
-          {/* LEFT SIDE */}
-          <div className="flex flex-col gap-0.5">
-            <p className="font-medium text-sm">Garibaldi Lake</p>
-            <p className="text-gray-400 text-xs">Aug 2025 3 nights 14.3 lb</p>
-          </div>
-
-          {/* RIGHT SIDE */}
-          <div className="flex items-center gap-3">
-            <span className="text-xs px-2 py-1 rounded-full bg-emerald-100 text-emerald-700 font-medium">
-              Ready
-            </span>
-            <button>
-              <MoreHorizontal size={18} />
-            </button>
-          </div>
-        </div>
-
-        {/* TRIP */}
-        <div className="px-4 py-3 flex justify-between items-center w-full">
-          {/* LEFT SIDE */}
-          <div className="flex flex-col gap-0.5">
-            <p className="font-medium text-sm">Juan de Fuca trail</p>
-            <p className="text-gray-400 text-xs">Sep 2025 · 4 nights · 9.1 lb</p>
-          </div>
-
-          {/* RIGHT SIDE */}
-          <div className="flex items-center gap-3">
-            <span className="text-xs px-2 py-1 rounded-full bg-gray-100 text-gray-700 font-medium">
-              Draft
-            </span>
-            <button>
-              <MoreHorizontal size={18} />
-            </button>
-          </div>
-        </div>
-
+        {trips.length === 0 ? (
+          <div>No Trips Found</div>
+        ) : (
+          trips.map((trip) => (
+            <TripRow
+              key={trip.id}
+              trip={trip}
+              onEdit={handleOpenEdit}
+              onDelete={handleDelete}
+              onOpen={handleTripOpen}
+            />
+          ))
+        )}
       </section>
 
       {/* FOOTER SECTION (ADD BUTTON) */}
@@ -57,10 +107,20 @@ export default function TripsPage() {
         <Button
           size="lg"
           className="w-full bg-emerald-600 hover:bg-emerald-700"
+          onClick={handleOpenAdd}
         >
           <Plus size={18} />
-          New Trip
+          Create Trip
         </Button>
+        <TripDialog
+          key={editingTrip?.id ?? "add"}
+          open={open}
+          onOpenChange={setOpen}
+          mode={mode}
+          editingTrip={editingTrip}
+          onSubmit={handleSubmit}
+          isSubmitting={isCreating}
+        />
       </section>
     </div>
   );

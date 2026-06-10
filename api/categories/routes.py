@@ -8,6 +8,7 @@ from api.core.exceptions import raise_404
 from api.core.dependencies import DBSession, CurrentUser
 import uuid
 
+#TODO: Possibly refactor this into init file
 router = APIRouter()
 
 # CREATE CATEGORY

@@ -52,12 +52,14 @@ export default function InventoryPage() {
     setEditingItem(null);
   };
 
+  //Opens dialog window for add mode
   const handleOpenAdd = () => {
     setMode("add");
     setEditingItem(null);
     setOpen(true);
   };
 
+  //Opens dialog window for edit mode
   const handleOpenEdit = (item: GearItem) => {
     setMode("edit");
     setEditingItem(item);
