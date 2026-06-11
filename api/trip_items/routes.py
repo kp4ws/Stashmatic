@@ -28,12 +28,16 @@ async def create_trip_item(trip_item: TripItemCreate, db: DBSession, current_use
 
 #GET ALL TRIP ITEMS
 @router.get("", response_model=list[TripItemResponse])
-async def get_all_trip_items(db: DBSession, current_user: CurrentUser):
-    return db.execute(
-        select(TripItem).join(TripItem.trip).where(
+async def get_all_trip_items(db: DBSession, current_user: CurrentUser, trip_id: uuid.UUID | None = None):
+    query = select(TripItem).join(TripItem.trip).where(
             Trip.user_id == current_user.id
         )
-    ).scalars().all()
+    
+    #If trip id, then filter all items for that specific trip
+    if trip_id:
+        query = query.where(TripItem.trip_id == trip_id)
+    
+    return db.execute(query).scalars().all()
 
 #GET SINGLE TRIP ITEM
 @router.get("/{id}", response_model=TripItemResponse)
