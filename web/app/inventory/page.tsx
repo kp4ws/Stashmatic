@@ -1,11 +1,11 @@
 "use client";
 
 import { useInventory } from "@/hooks/features/use-inventory";
-import { Filter, Plus, Pencil } from "lucide-react";
+import { Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import CategoryGroup from "@/components/category-group";
 import { useState } from "react";
-import { Category, DialogMode, GearItem } from "@/types";
+import { DialogMode, GearItem } from "@/types";
 import GearItemDialog from "@/components/gear-item-dialog";
 
 export default function InventoryPage() {
@@ -18,7 +18,7 @@ export default function InventoryPage() {
     deleteItem,
     updateItem,
     isSubmitting,
-    isDeleting,
+    // isDeleting,
   } = useInventory();
 
   const [open, setOpen] = useState<boolean>(false);
