@@ -24,7 +24,7 @@ export default function TripBuilder({
       <header className="text-white">{trip?.name}</header>
 
       {/* CATEGORY SECTIONS */}
-      <section>
+      <section className="flex flex-col gap-4">
         {categories.map((category) => {
           const categoryItems = tripItems.filter((tripItem) => {
             const gearItem = gearItems.find(
