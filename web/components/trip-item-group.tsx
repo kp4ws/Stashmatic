@@ -5,14 +5,16 @@ import {Plus} from "lucide-react";
 
 type Props = {
   name: string;
+  categoryId: string;
   items: TripItem[];
-  onAdd: () => void;
+  onAdd: (categoryId: string) => void;
   onEdit: (item: TripItem) => void;
   onDelete: (item: TripItem) => void;
 };
 
 export default function TripItemGroup({
   name,
+  categoryId,
   items,
   onAdd,
   onEdit,
@@ -37,7 +39,7 @@ export default function TripItemGroup({
             <Button
               size="lg"
               className="w-full bg-emerald-600 hover:bg-emerald-700"
-              onClick={onAdd}
+              onClick={() => onAdd(categoryId)}
             >
               <Plus size={18} />
               Add {name}

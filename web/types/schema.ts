@@ -221,11 +221,8 @@ export interface components {
              * Format: uuid
              */
             id: string;
-            /**
-             * User Id
-             * Format: uuid
-             */
-            user_id: string;
+            /** User Id */
+            user_id: string | null;
             /** Title */
             title: string;
             /** Deleted At */
@@ -412,6 +409,8 @@ export interface components {
         };
         /** TripItemUpdate */
         TripItemUpdate: {
+            /** Gear Item Id */
+            gear_item_id?: string | null;
             /** Quantity */
             quantity?: number | null;
             /** Is Packed */
@@ -930,7 +929,9 @@ export interface operations {
     };
     get_all_trip_items_v1_trip_items_get: {
         parameters: {
-            query?: never;
+            query?: {
+                trip_id?: string | null;
+            };
             header?: never;
             path?: never;
             cookie?: never;
@@ -944,6 +945,15 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["TripItemResponse"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
                 };
             };
         };

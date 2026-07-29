@@ -14,6 +14,7 @@ class TripItemCreate(BaseModel):
     recorded_name: Optional[str] = Field(None, max_length=255)
 
 class TripItemUpdate(BaseModel):
+    gear_item_id: Optional[uuid.UUID] = None
     quantity: Optional[int] = None
     is_packed: Optional[bool] = None
     recorded_weight: Optional[int] = None

@@ -15,6 +15,7 @@ from api.trips.models import Trip
 from api.trip_items.models import TripItem
 from api.core.enums import WeightUnit
 
+#TODO Need to add DEV_CLERK_ID to env for testing purposes
 MOCK_CLERK_ID = os.getenv("DEV_CLERK_ID", "dev_clerk_id_123")
 
 GEAR_DATA = [

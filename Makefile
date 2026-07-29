@@ -28,4 +28,4 @@ seed:
 	docker compose exec api python /app/api/scripts/seed_mock.py
 
 types:
-	docker compose exec web npm run gen-types
+	docker compose exec web npm run generate:types
