@@ -18,13 +18,13 @@ type Props = {
 export default function TripRow({ trip, onEdit, onDelete, onOpen }: Props) {
   return (
     <div
-      className="px-4 py-3 flex justify-between items-center w-full"
+      className="px-4 py-3 flex justify-between items-center w-full group hover:bg-slate-50 transition-colors cursor-pointer"
       onClick={() => onOpen(trip)}
     >
       {/* LEFT SIDE */}
       <div className="flex flex-col gap-0.5">
-        <p className="font-medium text-sm">{trip.name}</p>
-        <p className="text-gray-400 text-xs">{trip.description}</p>
+        <p className="font-medium text-slate-800 text-sm transition-colors">{trip.name}</p>
+        <p className="text-slate-500 text-xs truncate max-w-[200px] sm:max-w-xs md:max-w-md">{trip.description}</p>
       </div>
 
       {/* RIGHT SIDE */}
@@ -34,7 +34,7 @@ export default function TripRow({ trip, onEdit, onDelete, onOpen }: Props) {
         </span> */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild onClick={(e) => e.stopPropagation()}>
-            <Button variant="ghost" size="icon" className="text-gray-400">
+            <Button variant="ghost" size="icon" className="text-slate-400 hover:text-slate-600 hover:bg-slate-200/50">
               <MoreHorizontal size={18} />
             </Button>
           </DropdownMenuTrigger>

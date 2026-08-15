@@ -15,28 +15,28 @@ type Props = {
 };
 
 export default function TripItemRow({ item, onEdit, onDelete }: Props) {
-//   const weightLb =
-//     item.recorded_weight > 0 ? (item.recorded_weight / 453.592).toFixed(1) : null;
+  const weightLb =
+    item.recorded_weight > 0 ? (item.recorded_weight / 453.592).toFixed(1) : null;
 
   return (
-    <div className="px-4 py-3 flex justify-between items-center w-full">
+    <div className="px-4 py-3 flex justify-between items-center w-full group hover:bg-slate-50 transition-colors">
       {/* ITEM LEFT SIDE (description) */}
       <div className="flex flex-col gap-0.5">
-        <p className="font-medium text-sm">{item.recorded_name}</p>
-        {/* <p className="text-gray-400 text-xs">{item.description}</p> */}
+        <p className="font-medium text-slate-800 text-sm transition-colors">{item.recorded_name}</p>
+        <p className="text-slate-500 text-xs truncate max-w-[200px] sm:max-w-xs md:max-w-md">Qty: {item.quantity}</p>
       </div>
 
       {/* ITEM RIGHT SIDE */}
       <div className="flex items-center gap-3">
-        {/* {!weightLb ? (
-          <span className="text-amber-500 text-sm">No weight</span>
+        {!weightLb ? (
+          <span className="text-amber-500/80 text-xs bg-amber-50 px-2 py-0.5 rounded-full font-medium">No weight</span>
         ) : (
-          <span className="text-gray-500 text-sm">{item.weight_grams} lb</span>
-        )} */}
+          <span className="text-slate-500 text-xs bg-slate-100 px-2 py-0.5 rounded-full font-medium">{weightLb} lb</span>
+        )}
 
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost" size="icon" className="text-gray-400">
+            <Button variant="ghost" size="icon" className="text-slate-400 hover:text-slate-600 hover:bg-slate-200/50">
               <MoreHorizontal size={18} />
             </Button>
           </DropdownMenuTrigger>

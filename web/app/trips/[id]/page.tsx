@@ -5,6 +5,7 @@ import { useTripDetail } from "@/hooks/features/use-trip-detail";
 import { useInventory } from "@/hooks/features/use-inventory";
 import TripItemGroup from "@/components/trip-item-group";
 import { Button } from "@/components/ui/button";
+import { Loader2, AlertCircle } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import { DialogMode, TripItem } from "@/types";
@@ -80,8 +81,28 @@ export default function TripBuilder({
 
   const filteredGearItems = selectedCategoryId ? gearItems.filter((g) => g.category_id === selectedCategoryId) : gearItems;
 
-  if (isLoading) return <p className="text-white">Loading ...</p>;
-  if (error) return <p className="text-white">Failed to load trip</p>;
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="flex flex-col items-center text-emerald-100 gap-2">
+          <Loader2 className="h-8 w-8 animate-spin text-emerald-400" />
+          <p className="font-medium text-emerald-50">Loading trip builder...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen flex items-center justify-center px-6">
+        <div className="bg-red-950/50 border border-red-900/50 rounded-xl p-6 max-w-md w-full flex flex-col items-center text-center gap-3 shadow-lg">
+          <AlertCircle className="h-10 w-10 text-red-500" />
+          <h2 className="text-red-50 font-bold text-lg">Failed to load trip</h2>
+          <p className="text-red-200/70 text-sm">Please check your connection or try again later.</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen px-6 py-4 pb-24">

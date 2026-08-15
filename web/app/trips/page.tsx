@@ -5,7 +5,7 @@ import TripRow from "@/components/trip-row";
 import { Button } from "@/components/ui/button";
 import { useTrips } from "@/hooks/features/use-trips";
 import { DialogMode, Trip } from "@/types";
-import { Plus } from "lucide-react";
+import { Plus, Loader2, AlertCircle } from "lucide-react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
@@ -66,15 +66,24 @@ export default function TripsPage() {
   }
 
   if (isLoading) {
-    // TODO: Refactor loading widget
-    return <p>Loading ...</p>;
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="flex flex-col items-center text-emerald-100 gap-2">
+          <Loader2 className="h-8 w-8 animate-spin text-emerald-400" />
+          <p className="font-medium text-emerald-50">Loading trips...</p>
+        </div>
+      </div>
+    );
   }
 
   if (error) {
-    // TODO: Refactor error widget
     return (
-      <div className="">
-        <h2 className="text-white">Failed to load trips</h2>
+      <div className="min-h-screen flex items-center justify-center px-6">
+        <div className="bg-red-950/50 border border-red-900/50 rounded-xl p-6 max-w-md w-full flex flex-col items-center text-center gap-3 shadow-lg">
+          <AlertCircle className="h-10 w-10 text-red-500" />
+          <h2 className="text-red-50 font-bold text-lg">Failed to load trips</h2>
+          <p className="text-red-200/70 text-sm">Please check your connection or try again later.</p>
+        </div>
       </div>
     );
   }
@@ -86,9 +95,9 @@ export default function TripsPage() {
       </header>
 
       {/* TRIPS */}
-      <section className="bg-white divide-y divide-gray-100">
+      <section className="bg-white divide-y divide-slate-100 rounded-xl shadow-md overflow-hidden border border-emerald-900/10 mb-6">
         {trips.length === 0 ? (
-          <div>No Trips Found</div>
+          <div className="px-5 py-8 text-center text-slate-400 italic">No Trips Found</div>
         ) : (
           trips.map((trip) => (
             <TripRow

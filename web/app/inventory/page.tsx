@@ -1,7 +1,7 @@
 "use client";
 
 import { useInventory } from "@/hooks/features/use-inventory";
-import { Plus } from "lucide-react";
+import { Plus, Loader2, AlertCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import CategoryGroup from "@/components/category-group";
 import { useState } from "react";
@@ -71,15 +71,24 @@ export default function InventoryPage() {
   };
 
   if (isLoading) {
-    // TODO: Refactor loading widget
-    return <p>Loading ...</p>;
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="flex flex-col items-center text-emerald-100 gap-2">
+          <Loader2 className="h-8 w-8 animate-spin text-emerald-400" />
+          <p className="font-medium text-emerald-50">Loading inventory...</p>
+        </div>
+      </div>
+    );
   }
 
   if (error) {
-    // TODO: Refactor error widget
     return (
-      <div className="">
-        <h2 className="text-white">Failed to load inventory</h2>
+      <div className="min-h-screen flex items-center justify-center px-6">
+        <div className="bg-red-950/50 border border-red-900/50 rounded-xl p-6 max-w-md w-full flex flex-col items-center text-center gap-3 shadow-lg">
+          <AlertCircle className="h-10 w-10 text-red-500" />
+          <h2 className="text-red-50 font-bold text-lg">Failed to load inventory</h2>
+          <p className="text-red-200/70 text-sm">Please check your connection or try again later.</p>
+        </div>
       </div>
     );
   }
