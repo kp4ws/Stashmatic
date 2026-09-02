@@ -9,7 +9,7 @@ primary_region = 'lax'
 [build]
 
 [deploy]
-  release_command = "alembic -c api/alembic.ini upgrade head"
+  release_command = "sh -c 'alembic -c api/alembic.ini upgrade head && python api/scripts/seed_categories.py'"
 
 [http_service]
   internal_port = 8080
