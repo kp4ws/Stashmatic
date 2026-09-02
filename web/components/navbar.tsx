@@ -10,13 +10,13 @@ export default function NavBar() {
   const [open, setOpen] = useState<boolean>(false);
 
   return (
-    <nav className="sticky top-0 z-50 bg-emerald-950">
+    <nav className="sticky top-0 z-50 bg-emerald-950 shadow-sm">
       {/* FIRST ROW */}
       <div className="flex items-center justify-between px-6 py-4">
         {/* APP LOGO */}
         <Link
           href="/"
-          className="text-lg md:text-xl font-bold text-white hover:text-emerald-200"
+          className="text-xl md:text-2xl font-semibold tracking-tight text-white hover:text-emerald-100"
         >
           Stashmatic
         </Link>

@@ -20,7 +20,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Category, DialogMode, GearItem } from "@/types";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 type Props = {
   open: boolean;
@@ -28,7 +28,7 @@ type Props = {
   mode: DialogMode;
   editingItem: GearItem | null;
   categories: Category[];
-  onSubmit: (name: string, categoryId: string) => void;
+  onSubmit: (name: string, categoryId: string, weightGrams: number) => void;
   isSubmitting: boolean;
 };
 
@@ -42,11 +42,23 @@ export default function GearItemDialog({
   isSubmitting,
 }: Props) {
   const [name, setName] = useState<string>(editingItem?.name ?? "");
-  const [selectedCategory, setSelectedCategory] = useState<string>(editingItem?.category_id ?? "");
+  const [selectedCategory, setSelectedCategory] = useState<string>(
+    editingItem?.category_id ?? "",
+  );
+  const [weightGrams, setWeightGrams] = useState<number>(
+    editingItem?.weight_grams ?? 0,
+  );
+
+  useEffect(() => {
+    setName(editingItem?.name ?? "");
+    setSelectedCategory(editingItem?.category_id ?? "");
+    setWeightGrams(editingItem?.weight_grams ?? 0);
+  }, [editingItem, open]);
 
   const handleSubmit = () => {
     if (!name.trim() || !selectedCategory) return;
-    onSubmit(name, selectedCategory);
+    const parsedWeight = Math.max(0, Number(weightGrams) || 0);
+    onSubmit(name, selectedCategory, parsedWeight);
   };
 
   return (
@@ -92,6 +104,21 @@ export default function GearItemDialog({
                 </SelectGroup>
               </SelectContent>
             </Select>
+          </Field>
+          <Field>
+            <Label htmlFor="weight">Weight (g)</Label>
+            <Input
+              id="weight"
+              name="weight"
+              type="number"
+              min="0"
+              step="1"
+              placeholder="0"
+              value={weightGrams}
+              onChange={(e) =>
+                setWeightGrams(Math.max(0, Number(e.target.value) || 0))
+              }
+            />
           </Field>
         </FieldGroup>
         <DialogFooter>

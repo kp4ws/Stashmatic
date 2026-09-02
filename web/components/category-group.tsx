@@ -10,7 +10,7 @@ type Props = {
 
 export default function CategoryGroup({ name, items, onEdit, onDelete }: Props) {
   return (
-    <div className="rounded-xl overflow-hidden bg-white shadow-md mb-6 border border-emerald-900/10">
+    <div className="mb-6 overflow-hidden rounded-xl bg-emerald-50 shadow-sm">
       {/* CATEGORY HEADER */}
       <div className="bg-emerald-700 px-5 py-3.5 flex justify-between items-center w-full">
         <h3 className="text-emerald-50 font-bold uppercase text-sm tracking-wider">
@@ -20,7 +20,7 @@ export default function CategoryGroup({ name, items, onEdit, onDelete }: Props) 
       </div>
 
       {/* GEAR ITEM LIST */}
-      <div className="bg-white divide-y divide-slate-100">
+      <div className="bg-emerald-50 divide-y divide-slate-100">
         {/* GEAR ITEMS */}
         {items.length === 0 ? (
           <p className="px-5 py-6 text-slate-400 text-sm italic text-center">No items yet</p>

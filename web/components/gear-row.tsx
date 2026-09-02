@@ -15,8 +15,8 @@ type Props = {
 };
 
 export default function GearRow({ item, onEdit, onDelete }: Props) {
-  const weightLb =
-    item.weight_grams > 0 ? (item.weight_grams / 453.592).toFixed(1) : null;
+  const weightDisplay =
+    item.weight_grams > 0 ? `${item.weight_grams.toLocaleString()} g` : null;
 
   return (
     <div className="px-4 py-3 flex justify-between items-center w-full group hover:bg-slate-50 transition-colors">
@@ -28,10 +28,10 @@ export default function GearRow({ item, onEdit, onDelete }: Props) {
 
       {/* ITEM RIGHT SIDE */}
       <div className="flex items-center gap-3">
-        {!weightLb ? (
+        {!weightDisplay ? (
           <span className="text-amber-500/80 text-xs bg-amber-50 px-2 py-0.5 rounded-full font-medium">No weight</span>
         ) : (
-          <span className="text-slate-500 text-xs bg-slate-100 px-2 py-0.5 rounded-full font-medium">{weightLb} lb</span>
+          <span className="text-slate-500 text-xs bg-slate-100 px-2 py-0.5 rounded-full font-medium">{weightDisplay}</span>
         )}
 
         <DropdownMenu>

@@ -18,6 +18,7 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   title: "Stashmatic",
   description: "Strategic gear planning.",
+  applicationName: "Stashmatic",
   manifest: "/manifest.json",
 };
 
@@ -29,14 +30,12 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en" className={cn("font-sans", inter.variable)}>
-        <body className={`${inter.variable} antialiased`}>
+        <body className={`${inter.variable} bg-emerald-900 text-slate-900 antialiased`}>
           <Providers>
             <Toaster richColors position="top-right" />
             <NavBar />
 
-            <main className="bg-emerald-900">{children}</main>
-
-            
+            <main className="min-h-screen bg-emerald-900 text-slate-900">{children}</main>
           </Providers>
         </body>
       </html>

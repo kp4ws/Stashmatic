@@ -26,13 +26,20 @@ export default function InventoryPage() {
   const [editingItem, setEditingItem] = useState<GearItem | null>(null);
 
   //Handles submit for both add and edit
-  const handleSubmit = async (name: string, categoryId: string) => {
+  const handleSubmit = async (
+    name: string,
+    categoryId: string,
+    weightGrams: number,
+  ) => {
+    const normalizedWeight = Math.max(0, Number(weightGrams) || 0);
+
     if (mode === "edit" && editingItem) {
       await updateItem({
         id: editingItem.id,
         data: {
           name,
           category_id: categoryId,
+          weight_grams: normalizedWeight,
         },
       });
     } else {
@@ -40,7 +47,7 @@ export default function InventoryPage() {
         name,
         category_id: categoryId,
         brand: "",
-        weight_grams: 0,
+        weight_grams: normalizedWeight,
         description: "",
         is_consumable: false,
         is_worn: false,
@@ -94,24 +101,13 @@ export default function InventoryPage() {
   }
 
   return (
-    <div className="min-h-screen px-6 py-4 pb-24">
+    <div className="min-h-screen bg-emerald-900 px-6 py-4 pb-24 md:flex md:justify-center">
+      <div className="w-full md:max-w-xl">
       {/* TODO: Error/Warning bar at top */}
       {/* <div></div> */}
       {/* Inventory Header */}
-      <header className="flex justify-between items-center mb-6">
-        {/* TODO: Consider hiding page headers on desktop screens */}
-        <h1 className="text-lg md:text-4xl text-white font-bold">Inventory</h1>
-
-        {/* IMPORT/EXPORT BUTTONS & FILTER */}
-        {/* TODO: Deferred to later version */}
-        {/* <div className="flex justify-center items-center">
-          <div className="px-4">
-            <Button size="lg">Import</Button>
-            <Button size="lg">Export</Button>
-          </div>
-
-          <Filter color="white" size={24} />
-        </div> */}
+      <header className="mb-4 border-b border-emerald-800 pb-3">
+        <h1 className="text-xl md:text-2xl font-semibold tracking-tight text-white">Inventory</h1>
       </header>
 
       {/* CATEGORY SECTIONS */}
@@ -135,7 +131,7 @@ export default function InventoryPage() {
       </section>
 
       {/* FOOTER SECTION (ADD BUTTON) */}
-      <section className="fixed bottom-0 left-0 right-0 p-4 bg-emerald-900 border-t border-emerald-800">
+      <section className="fixed bottom-0 left-0 right-0 p-4 bg-emerald-800 border-t border-emerald-800">
         <Button
           size="lg"
           className="w-full bg-emerald-600 hover:bg-emerald-700"
@@ -155,6 +151,7 @@ export default function InventoryPage() {
           isSubmitting={isSubmitting}
         />
       </section>
+      </div>
     </div>
   );
 }

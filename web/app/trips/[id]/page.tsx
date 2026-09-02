@@ -5,7 +5,7 @@ import { useTripDetail } from "@/hooks/features/use-trip-detail";
 import { useInventory } from "@/hooks/features/use-inventory";
 import TripItemGroup from "@/components/trip-item-group";
 import { Button } from "@/components/ui/button";
-import { Loader2, AlertCircle } from "lucide-react";
+import { Loader2, AlertCircle, ArrowLeft, Plus, Weight } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import { DialogMode, TripItem } from "@/types";
@@ -37,22 +37,36 @@ export default function TripBuilder({
   const [editingItem, setEditingItem] = useState<TripItem | null>(null);
   const [selectedCategoryId, setSelectedCategoryId] = useState<string | null>(null);
 
-  const handleSubmit = async (gearItemId: string) => {
-    if (mode === "edit" && editingItem) {
+  const handleSubmit = async (gearItemIds: string | string[]) => {
+    const ids = Array.isArray(gearItemIds) ? gearItemIds : [gearItemIds];
+
+    if (mode === "edit" && editingItem && !Array.isArray(gearItemIds)) {
+      const selectedGearItem =
+        gearItems.find((g) => g.id === gearItemIds) ?? null;
+
       await updateItem({
         id: editingItem.id,
-        data: { gear_item_id: gearItemId },
+        data: {
+          gear_item_id: gearItemIds,
+          recorded_name: selectedGearItem?.name ?? editingItem.recorded_name,
+          recorded_weight: selectedGearItem?.weight_grams ?? editingItem.recorded_weight,
+        },
       });
     } else {
-      await createItem({
-        trip_id: id,
-        gear_item_id: gearItemId,
-        quantity: 1,
-        is_packed: false,
-        recorded_name: gearItems.find((g) => g.id == gearItemId)?.name ?? "",
-        recorded_weight:
-          gearItems.find((g) => g.id == gearItemId)?.weight_grams ?? 0,
-      });
+      // Create multiple items
+      for (const gearItemId of ids) {
+        const selectedGearItem =
+          gearItems.find((g) => g.id === gearItemId) ?? null;
+
+        await createItem({
+          trip_id: id,
+          gear_item_id: gearItemId,
+          quantity: 1,
+          is_packed: false,
+          recorded_name: selectedGearItem?.name ?? "",
+          recorded_weight: selectedGearItem?.weight_grams ?? 0,
+        });
+      }
     }
 
     setOpen(false);
@@ -104,18 +118,34 @@ export default function TripBuilder({
     );
   }
 
+  const totalWeight = tripItems.reduce((sum, item) => sum + (item.recorded_weight || 0), 0);
+
   return (
-    <div className="min-h-screen px-6 py-4 pb-24">
-      <header className="text-white py-4">
-        <div className="flex justify-left items-center gap-4">
-          <div className="font-bold text-lg">{trip?.name}</div>
-          <Link href="/trips">
-            <Button>Back to Trips</Button>
-          </Link>
+    <div className="min-h-screen bg-emerald-900 px-4 py-4 pb-28 md:px-6 md:flex md:justify-center">
+      <div className="w-full md:max-w-xl">
+      <header className="mb-5 border-b border-emerald-800 pb-3">
+        <div className="flex items-center justify-between gap-3">
+          <div className="flex items-center gap-3">
+            <Link href="/trips">
+              <Button
+                variant="outline"
+                size="icon"
+                className="h-9 w-9 rounded-full border-emerald-700 bg-emerald-900 text-emerald-50 hover:bg-emerald-800"
+              >
+                <ArrowLeft size={16} />
+              </Button>
+            </Link>
+            <div>
+              <h1 className="text-xl md:text-2xl font-semibold tracking-tight text-white">{trip?.name}</h1>
+            </div>
+          </div>
+          <div className="inline-flex items-center gap-1.5 rounded-full bg-emerald-800 px-2.5 py-1 text-xs font-medium text-emerald-50 sm:gap-2 sm:px-3">
+            <Weight size={12} className="text-emerald-200" />
+            {totalWeight > 0 ? `${totalWeight.toLocaleString()} g` : "No weight"}
+          </div>
         </div>
       </header>
 
-      {/* CATEGORY SECTIONS */}
       <section className="flex flex-col gap-4">
         {categories.map((category) => {
           const categoryItems = tripItems.filter((tripItem) => {
@@ -149,6 +179,21 @@ export default function TripBuilder({
           isSubmitting={isSubmitting}
         />
       </section>
+
+      <div className="fixed bottom-0 left-0 right-0 bg-emerald-900 p-4 shadow-[0_-8px_20px_rgba(6,78,59,0.28)] ring-1 ring-emerald-800/80">
+        <Button
+          size="lg"
+          className="w-full bg-emerald-600 text-white hover:bg-emerald-500"
+          onClick={() => {
+            const firstCategory = categories[0];
+            if (firstCategory) handleOpenAdd(firstCategory.id);
+          }}
+        >
+          <Plus size={18} className="mr-2" />
+          Add Item
+        </Button>
+      </div>
+      </div>
     </div>
   );
 }

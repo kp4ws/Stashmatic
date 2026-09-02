@@ -4,11 +4,11 @@ import Link from "next/link";
 
 export default function HomePage() {
   return (
-    <div className="">
+    <div className="bg-slate-50">
       {/* HERO SECTION */}
-      <header className="py-10 md:py-20 min-h-screen flex flex-col items-center justify-center">
+      <header className="py-10 md:py-20 min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-emerald-950 to-emerald-900 text-center">
         <h1 className="text-2xl md:text-4xl font-extrabold text-white mb-4">
-          Plan your pack like a <span className="text-green-400">pro</span>
+          Plan your pack like a <span className="text-emerald-200">pro</span>
         </h1>
         <p className="text-emerald-100 text-lg mb-8 max-w-xl text-center text-wrap">
           A structured gear planner for backpacking trips. Add your gear, build

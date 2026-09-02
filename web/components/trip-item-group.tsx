@@ -22,30 +22,26 @@ export default function TripItemGroup({
 }: Props) {
 
   return (
-    <div>
-      {/* CATEGORY HEADER */}
-      <div className="bg-emerald-600 px-4 py-3 flex justify-between items-center w-full">
-        <h3 className="text-white font-bold uppercase text-sm tracking-wider">
+    <div className="mb-6 overflow-hidden rounded-xl bg-emerald-50 shadow-sm">
+      <div className="bg-emerald-700 px-5 py-3.5 flex justify-between items-center w-full">
+        <h3 className="text-emerald-50 font-bold uppercase text-sm tracking-wider">
           {name}
         </h3>
-        {/* <div className="text-gray-50 text-sm">{items.length} items</div> */}
+        <Button
+          size="sm"
+          className="bg-emerald-600 hover:bg-emerald-500 text-white"
+          onClick={() => onAdd(categoryId)}
+        >
+          <Plus size={16} className="mr-1" />
+          Add
+        </Button>
       </div>
 
-      {/* TRIP ITEM LIST */}
-      <div className="bg-white divide-y divide-gray-100">
-        {/* TRIP ITEMS */}
+      <div className="bg-emerald-50 divide-y divide-slate-100">
         {items.length === 0 ? (
-          <div>
-            <Button
-              size="lg"
-              className="w-full bg-emerald-600 hover:bg-emerald-700"
-              onClick={() => onAdd(categoryId)}
-            >
-              <Plus size={18} />
-              Add {name}
-            </Button> 
-            {/* <p className="px-4 py-3 text-gray-400 text-sm italic">No items yet</p> */}
-            </div>
+          <div className="p-4 text-center text-slate-500 italic text-sm">
+            No items selected
+          </div>
         ) : (
           items.map((item) => (
             <TripItemRow

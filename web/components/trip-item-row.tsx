@@ -15,35 +15,40 @@ type Props = {
 };
 
 export default function TripItemRow({ item, onEdit, onDelete }: Props) {
-  const weightLb =
-    item.recorded_weight > 0 ? (item.recorded_weight / 453.592).toFixed(1) : null;
+  const weightDisplay =
+    item.recorded_weight > 0 ? `${item.recorded_weight.toLocaleString()} g` : null;
 
   return (
-    <div className="px-4 py-3 flex justify-between items-center w-full group hover:bg-slate-50 transition-colors">
-      {/* ITEM LEFT SIDE (description) */}
-      <div className="flex flex-col gap-0.5">
-        <p className="font-medium text-slate-800 text-sm transition-colors">{item.recorded_name}</p>
-        <p className="text-slate-500 text-xs truncate max-w-[200px] sm:max-w-xs md:max-w-md">Qty: {item.quantity}</p>
+    <div className="flex w-full items-center justify-between gap-3 px-4 py-3 transition-colors hover:bg-slate-50">
+      <div className="flex min-w-0 flex-1 flex-col gap-0.5">
+        <p className="text-sm font-medium text-slate-800 transition-colors">
+          {item.recorded_name}
+        </p>
       </div>
 
-      {/* ITEM RIGHT SIDE */}
-      <div className="flex items-center gap-3">
-        {!weightLb ? (
-          <span className="text-amber-500/80 text-xs bg-amber-50 px-2 py-0.5 rounded-full font-medium">No weight</span>
+      <div className="flex items-center gap-2 sm:gap-3">
+        {!weightDisplay ? (
+          <span className="rounded-full bg-amber-50 px-2 py-0.5 text-[10px] font-medium text-amber-700">
+            No weight
+          </span>
         ) : (
-          <span className="text-slate-500 text-xs bg-slate-100 px-2 py-0.5 rounded-full font-medium">{weightLb} lb</span>
+          <span className="rounded-full bg-slate-100 px-2 py-0.5 text-[10px] font-medium text-slate-600">
+            {weightDisplay}
+          </span>
         )}
 
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost" size="icon" className="text-slate-400 hover:text-slate-600 hover:bg-slate-200/50">
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-8 w-8 text-slate-400 hover:bg-slate-200/50 hover:text-slate-600"
+            >
               <MoreHorizontal size={18} />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <DropdownMenuItem onClick={() => onEdit(item)}>
-              Edit
-            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => onEdit(item)}>Edit</DropdownMenuItem>
             <DropdownMenuItem
               onClick={() => onDelete(item)}
               className="text-red-500 focus:text-red-500"

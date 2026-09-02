@@ -18,7 +18,7 @@ type Props = {
 export default function TripRow({ trip, onEdit, onDelete, onOpen }: Props) {
   return (
     <div
-      className="px-4 py-3 flex justify-between items-center w-full group hover:bg-slate-50 transition-colors cursor-pointer"
+      className="px-4 py-4 flex justify-between items-center w-full group hover:bg-slate-50 transition-colors cursor-pointer"
       onClick={() => onOpen(trip)}
     >
       {/* LEFT SIDE */}
@@ -39,11 +39,19 @@ export default function TripRow({ trip, onEdit, onDelete, onOpen }: Props) {
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <DropdownMenuItem onClick={() => onEdit(trip)}>
+            <DropdownMenuItem
+              onClick={(e) => {
+                e.stopPropagation();
+                onEdit(trip);
+              }}
+            >
               Edit
             </DropdownMenuItem>
             <DropdownMenuItem
-              onClick={() => onDelete(trip)}
+              onClick={(e) => {
+                e.stopPropagation();
+                onDelete(trip);
+              }}
               className="text-red-500 focus:text-red-500"
             >
               Delete

@@ -63,7 +63,7 @@ export default function TripsPage() {
   //Callback to enter trip builder when one of the rows is clicked on
   const handleTripOpen = (trip: Trip) => {
     router.push(`/trips/${trip.id}`);
-  }
+  };
 
   if (isLoading) {
     return (
@@ -89,30 +89,32 @@ export default function TripsPage() {
   }
 
   return (
-    <div className="min-h-screen px-6 py-4 pb-24">
-      <header className="flex justify-between items-center mb-6">
-        <h1 className="text-lg md:text-4xl text-white font-bold">Trips</h1>
+    <div className="min-h-screen bg-emerald-900 px-6 py-4 pb-24 md:flex md:justify-center">
+      <div className="w-full md:max-w-xl">
+      <header className="mb-4 border-b border-emerald-800 pb-3">
+        <h1 className="text-xl md:text-2xl font-semibold tracking-tight text-white">Trips</h1>
       </header>
 
       {/* TRIPS */}
-      <section className="bg-white divide-y divide-slate-100 rounded-xl shadow-md overflow-hidden border border-emerald-900/10 mb-6">
+      <section className="mb-6 flex flex-col gap-2">
         {trips.length === 0 ? (
-          <div className="px-5 py-8 text-center text-slate-400 italic">No Trips Found</div>
+          <div className="px-5 py-8 text-center text-slate-400 italic bg-emerald-50 rounded-lg">No Trips Found</div>
         ) : (
           trips.map((trip) => (
-            <TripRow
-              key={trip.id}
-              trip={trip}
-              onEdit={handleOpenEdit}
-              onDelete={handleDelete}
-              onOpen={handleTripOpen}
-            />
+            <div key={trip.id} className="overflow-hidden rounded-lg bg-emerald-50 shadow-sm">
+              <TripRow
+                trip={trip}
+                onEdit={handleOpenEdit}
+                onDelete={handleDelete}
+                onOpen={handleTripOpen}
+              />
+            </div>
           ))
         )}
       </section>
 
       {/* FOOTER SECTION (ADD BUTTON) */}
-      <section className="fixed bottom-0 left-0 right-0 p-4 bg-emerald-900 border-t border-emerald-800">
+      <section className="fixed bottom-0 left-0 right-0 p-4 bg-emerald-800 border-t border-emerald-800">
         <Button
           size="lg"
           className="w-full bg-emerald-600 hover:bg-emerald-700"
@@ -131,6 +133,7 @@ export default function TripsPage() {
           isSubmitting={isCreating}
         />
       </section>
+      </div>
     </div>
   );
 }
