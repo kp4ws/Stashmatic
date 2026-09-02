@@ -49,7 +49,7 @@ def test_user(db_session):
     return user
 
 @pytest.fixture()
-def client(db_session):
+def client(db_session, test_user):
     """FastAPI TestClient with the test DB session injected"""
     def override_get_db():
         try:
