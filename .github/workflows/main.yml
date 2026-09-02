@@ -35,6 +35,7 @@ jobs:
           DATABASE_URL: sqlite:///./prod.db # Satisfies pydantic-settings
           TEST_DATABASE_URL: sqlite:///./test.db # Used by conftest.py
           CLERK_SECRET_KEY: test_sk_123 # Dummy key for tests
+          PYTHONPATH: ..
         run: |
           pytest
 
