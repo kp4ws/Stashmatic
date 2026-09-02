@@ -9,7 +9,7 @@ primary_region = 'lax'
 [build]
 
 [deploy]
-  release_command = "alembic upgrade head"
+  release_command = "alembic -c api/alembic.ini upgrade head"
 
 [http_service]
   internal_port = 8080
