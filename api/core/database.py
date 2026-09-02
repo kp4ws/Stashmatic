@@ -6,7 +6,7 @@ from api.core.config import settings
 '''
 Engine manages the connection to the database and handles query execution.
 '''
-engine = create_engine(settings.DATABASE_URL)
+engine = create_engine(settings.DATABASE_URL, pool_pre_ping=True)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 class Base(DeclarativeBase):
