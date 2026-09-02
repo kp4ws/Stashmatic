@@ -3,10 +3,10 @@ name: Stashmatic CI/CD
 on:
   push:
     branches:
-      - main
+      - master
   pull_request:
     branches:
-      - main
+      - master
 
 jobs:
   test-api:
@@ -42,8 +42,8 @@ jobs:
     name: Deploy API to Fly.io
     needs: test-api
     runs-on: ubuntu-latest
-    # Only deploy on pushes to main, not on PRs
-    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    # Only deploy on pushes to master, not on PRs
+    if: github.ref == 'refs/heads/master' && github.event_name == 'push'
     defaults:
       run:
         working-directory: ./api
