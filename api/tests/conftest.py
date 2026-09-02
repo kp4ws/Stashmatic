@@ -9,7 +9,7 @@ from api.core.database import Base
 from api.core.config import settings
 from api.main import app
 from api.core.database import get_db
-from api.core.deps import get_current_user
+from api.core.dependencies import get_current_user
 from api.users.models import User
 
 import api.models
