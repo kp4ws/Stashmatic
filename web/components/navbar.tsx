@@ -9,14 +9,7 @@ import { useState } from "react";
 export default function NavBar() {
   const [open, setOpen] = useState<boolean>(false);
 
-  // Prevent auto‑close when clicking outside the sheet
-  const handleInteractOutside = (e: any) => {
-    const target = e.target as HTMLElement;
-    if (target.closest('a')) {
-      return;
-    }
-    e.preventDefault();
-  };
+
 
   return (
     <nav className="sticky top-0 z-50 bg-emerald-950 shadow-sm">
@@ -52,7 +45,7 @@ export default function NavBar() {
               <Menu size={24} className="text-white" />
             </button>
           </SheetTrigger>
-          <SheetContent className="bg-emerald-950 [&_button]:text-white" onInteractOutside={handleInteractOutside}>
+          <SheetContent className="bg-emerald-950 [&_button]:text-white">
             <div className="flex flex-col items-center gap-4 mt-8">
               <Show when="signed-out">
                 <SignInButton mode="modal">
