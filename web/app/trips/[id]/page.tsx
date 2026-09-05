@@ -123,64 +123,64 @@ export default function TripBuilder({
   return (
     <div className="min-h-screen bg-emerald-900 px-4 py-4 pb-28 md:px-6 md:flex md:justify-center">
       <div className="w-full md:max-w-xl">
-      <header className="mb-5 border-b border-emerald-800 pb-3">
-        <div className="flex items-center justify-between gap-3">
-          <div className="flex items-center gap-3">
-            <Link href="/trips">
-              <Button
-                variant="outline"
-                size="icon"
-                className="h-9 w-9 rounded-full border-emerald-700 bg-emerald-900 text-emerald-50 hover:bg-emerald-800"
-              >
-                <ArrowLeft size={16} />
-              </Button>
-            </Link>
-            <div>
-              <h1 className="text-xl md:text-2xl font-semibold tracking-tight text-white">{trip?.name}</h1>
+        <header className="mb-5 border-b border-emerald-800 pb-3">
+          <div className="flex items-center justify-between gap-3">
+            <div className="flex items-center gap-3">
+              <Link href="/trips">
+                <Button
+                  variant="outline"
+                  size="icon"
+                  className="h-9 w-9 rounded-full border-emerald-700 bg-emerald-900 text-emerald-50 hover:bg-emerald-800"
+                >
+                  <ArrowLeft size={16} />
+                </Button>
+              </Link>
+              <div>
+                <h1 className="text-xl md:text-2xl font-semibold tracking-tight text-white">{trip?.name}</h1>
+              </div>
+            </div>
+            <div className="inline-flex items-center gap-1.5 rounded-full bg-emerald-800 px-2.5 py-1 text-xs font-medium text-emerald-50 sm:gap-2 sm:px-3">
+              <Weight size={12} className="text-emerald-200" />
+              {totalWeight > 0 ? `${totalWeight.toLocaleString()} g` : "No weight"}
             </div>
           </div>
-          <div className="inline-flex items-center gap-1.5 rounded-full bg-emerald-800 px-2.5 py-1 text-xs font-medium text-emerald-50 sm:gap-2 sm:px-3">
-            <Weight size={12} className="text-emerald-200" />
-            {totalWeight > 0 ? `${totalWeight.toLocaleString()} g` : "No weight"}
-          </div>
-        </div>
-      </header>
+        </header>
 
-      <section className="flex flex-col gap-4">
-        {categories.map((category) => {
-          const categoryItems = tripItems.filter((tripItem) => {
-            const gearItem = gearItems.find(
-              (g) => g.id === tripItem.gear_item_id,
+        <section className="flex flex-col gap-4">
+          {categories.map((category) => {
+            const categoryItems = tripItems.filter((tripItem) => {
+              const gearItem = gearItems.find(
+                (g) => g.id === tripItem.gear_item_id,
+              );
+              return gearItem?.category_id === category.id;
+            });
+
+            return (
+              <TripItemGroup
+                key={category.id}
+                name={category.title}
+                categoryId={category.id}
+                items={categoryItems}
+                onAdd={handleOpenAdd}
+                onEdit={handleOpenEdit}
+                onDelete={handleDeleteTripItem}
+              />
             );
-            return gearItem?.category_id === category.id;
-          });
+          })}
 
-          return (
-            <TripItemGroup
-              key={category.id}
-              name={category.title}
-              categoryId={category.id}
-              items={categoryItems}
-              onAdd={handleOpenAdd}
-              onEdit={handleOpenEdit}
-              onDelete={handleDeleteTripItem}
-            />
-          );
-        })}
+          <TripItemDialog
+            key={editingItem?.id ?? "add"}
+            open={open}
+            onOpenChange={setOpen}
+            mode={mode}
+            editingItem={editingItem}
+            gear_items={filteredGearItems}
+            onSubmit={handleSubmit}
+            isSubmitting={isSubmitting}
+          />
+        </section>
 
-        <TripItemDialog
-          key={editingItem?.id ?? "add"}
-          open={open}
-          onOpenChange={setOpen}
-          mode={mode}
-          editingItem={editingItem}
-          gear_items={filteredGearItems}
-          onSubmit={handleSubmit}
-          isSubmitting={isSubmitting}
-        />
-      </section>
-
-      <div className="fixed bottom-0 left-0 right-0 bg-emerald-900 p-4 shadow-[0_-8px_20px_rgba(6,78,59,0.28)] ring-1 ring-emerald-800/80">
+        {/* <div className="fixed bottom-0 left-0 right-0 bg-emerald-900 p-4 shadow-[0_-8px_20px_rgba(6,78,59,0.28)] ring-1 ring-emerald-800/80">
         <Button
           size="lg"
           className="w-full bg-emerald-600 text-white hover:bg-emerald-500"
@@ -192,7 +192,7 @@ export default function TripBuilder({
           <Plus size={18} className="mr-2" />
           Add Item
         </Button>
-      </div>
+      </div> */}
       </div>
     </div>
   );
