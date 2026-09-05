@@ -39,45 +39,47 @@ export default function NavBar() {
         </div>
 
         {/* MOBILE Menu */}
-        <Sheet open={open} onOpenChange={setOpen}>
-          <SheetTrigger asChild className="md:hidden">
-            <button onClick={() => setOpen(true)}>
-              <Menu size={24} className="text-white" />
-            </button>
-          </SheetTrigger>
-          <SheetContent className="bg-emerald-950 [&_button]:text-white">
-            <div className="flex flex-col items-center gap-4 mt-8">
-              <Show when="signed-out">
-                <SignInButton mode="modal">
-                  <span className="text-lg text-white hover:text-emerald-200 cursor-pointer">Login</span>
-                </SignInButton>
-                <SignUpButton mode="modal">
-                  <span className="text-lg text-white hover:text-emerald-200 cursor-pointer">Register</span>
-                </SignUpButton>
-              </Show>
-              <Show when="signed-in">
-                <UserButton />
-              </Show>
+        <div className="flex items-center gap-3 md:hidden">
+          <Show when="signed-in">
+            <UserButton />
+          </Show>
+          <Sheet open={open} onOpenChange={setOpen}>
+            <SheetTrigger asChild className="md:hidden">
+              <button onClick={() => setOpen(true)}>
+                <Menu size={24} className="text-white" />
+              </button>
+            </SheetTrigger>
+            <SheetContent className="bg-emerald-950 [&_button]:text-white">
+              <div className="flex flex-col items-center gap-4 mt-8">
+                <Show when="signed-out">
+                  <SignInButton mode="modal">
+                    <span className="text-lg text-white hover:text-emerald-200 cursor-pointer">Login</span>
+                  </SignInButton>
+                  <SignUpButton mode="modal">
+                    <span className="text-lg text-white hover:text-emerald-200 cursor-pointer">Register</span>
+                  </SignUpButton>
+                </Show>
 
-              <hr className="w-full border-emerald-800 my-2" />
+                <hr className="w-full border-emerald-800 my-2" />
 
-              <Link
-                href="/trips"
-                className="text-lg text-white hover:text-emerald-200"
-                onClick={() => setOpen(false)}
-              >
-                Trips
-              </Link>
-              <Link
-                href="/inventory"
-                className="text-lg text-white hover:text-emerald-200"
-                onClick={() => setOpen(false)}
-              >
-                Inventory
-              </Link>
-            </div>
-          </SheetContent>
-        </Sheet>
+                <Link
+                  href="/trips"
+                  className="text-lg text-white hover:text-emerald-200"
+                  onClick={() => setOpen(false)}
+                >
+                  Trips
+                </Link>
+                <Link
+                  href="/inventory"
+                  className="text-lg text-white hover:text-emerald-200"
+                  onClick={() => setOpen(false)}
+                >
+                  Inventory
+                </Link>
+              </div>
+            </SheetContent>
+          </Sheet>
+        </div>
 
         {/* DARK MODE TOGGLE: TODO */}
       </div>
